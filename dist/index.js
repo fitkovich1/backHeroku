@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const app = express_1.default();
 app.use(cors_1.default());
@@ -29,7 +30,11 @@ someRouter.get('/y', (req, res) => {
     res.status(200).json({ z: 1, count: fakeState.counter });
 });
 app.use('/x', someRouter);
-app.listen(process.env.PORT, () => {
-    console.log('listen neko back: ' + process.env.PORT);
-});
+mongoose_1.default.connect('mongodb+srv://fitkovich1:1793001427901byfly@cluster0-5zgnh.mongodb.net/fake_data?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+    console.log('status: 200');
+    app.listen(process.env.PORT, () => {
+        console.log('listen neko back: ' + process.env.PORT);
+    });
+}).catch(e => console.log('error connection' + e));
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,6 @@
 import express, {Request, Response, NextFunction} from 'express';
 import cors from 'cors';
+import  mongoose from 'mongoose';
 import bodyParser from "body-parser";
 
 const app = express();
@@ -21,7 +22,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 const fakeState = {
    counter: 0,
 };
-
 const someRouter = express.Router();
 someRouter.get('/y', (req:Request, res:Response) => {
    fakeState.counter += 1;
@@ -30,6 +30,12 @@ someRouter.get('/y', (req:Request, res:Response) => {
 
 app.use('/x', someRouter);
 
-app.listen(process.env.PORT, () => {
-   console.log('listen neko back: ' + process.env.PORT)
-});
+mongoose.connect('mongodb+srv://fitkovich1:1793001427901byfly@cluster0-5zgnh.mongodb.net/fake_data?retryWrites=true&w=majority',
+    {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(()=> {
+       console.log('status: 200');
+       app.listen(process.env.PORT, () => {
+          console.log('listen neko back: ' + process.env.PORT)
+       });
+}).catch(e => console.log('error connection' + e));
+
